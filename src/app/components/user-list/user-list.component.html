@@ -1,0 +1,28 @@
+<app-home 
+    title="Lista de usuários"
+    textBtn="Add usuário"
+    (navigate) = "navigate()"
+>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Idade</th>
+          <th>#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of usuarios">
+          <td>{{ user.nome }}</td>
+          <td>{{ user.idade }}</td>
+          <td>
+            <div class="d-flex" style="gap: 20px;">
+              <i class="fa-solid fa-pen"></i>
+              <i class="fa-solid fa-trash"></i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</app-home>
+  

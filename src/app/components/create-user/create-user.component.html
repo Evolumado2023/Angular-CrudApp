@@ -1,0 +1,24 @@
+<app-home 
+    title="Registrar usuário"
+    textBtn="Voltar"
+    (navigate) = "navigate()"
+>
+    <form [formGroup] = "createUserForm">
+        <app-input 
+            formControlName = "nome"
+            inputName = "Nome"
+            type = "text"
+            label = "DIGITE SEU NOME"
+            placeholder = "nome..."
+        ></app-input>
+        <app-input 
+            formControlName = "idade"
+            inputName = "Idade"
+            type = "number"
+            label = "DIGITE SUA IDADE"
+            placeholder = "idade..."
+        ></app-input>
+        <button (click)="submit()" class="btn btn-primary w-100">Salvar</button>
+    </form>
+
+</app-home>

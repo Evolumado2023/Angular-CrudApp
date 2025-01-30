@@ -1,0 +1,14 @@
+<main class="container">
+    <section>
+        <div>
+            <h1 class="text-center">CrudApp</h1>
+        </div>
+    </section>
+    <section>
+        <div class="d-flex justify-content-between">
+            <h3> {{ title }} </h3>
+            <button class="btn btn-primary" (click)="navigate()"> {{ textBtn }} </button>
+        </div>
+        <ng-content></ng-content>
+    </section>
+</main>
