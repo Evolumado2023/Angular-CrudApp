@@ -17,8 +17,8 @@
           <td>{{ user.idade }}</td>
           <td>
             <div class="d-flex" style="gap: 20px;">
-              <i class="fa-solid fa-pen"></i>
-              <i class="fa-solid fa-trash"></i>
+              <i class="fa-solid fa-pen text-primary" (click)="editarUsuario(user)"></i>
+              <i class="fa-solid fa-trash text-danger" (click)="excluirUsuario(user.id)"></i>
             </div>
           </td>
         </tr>
