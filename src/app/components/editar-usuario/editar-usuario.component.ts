@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
-import { HomeComponent } from '../home/home.component';
-import { InputComponent } from '../input/input.component';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import { ToastrService } from 'ngx-toastr';
+import { DefaultFormUserComponent } from '../default-form-user/default-form-user.component';
 
 @Component({
   selector: 'app-editar-usuario',
   imports: [
-    HomeComponent,
-    ReactiveFormsModule,
-    InputComponent
+    DefaultFormUserComponent,
   ],
   providers : [
     UsuarioService
@@ -19,30 +16,35 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './editar-usuario.component.html',
   styleUrl: './editar-usuario.component.scss'
 })
-export class EditarUsuarioComponent {
+export class EditarUsuarioComponent implements OnInit {
 
-  editUserForm : FormGroup;
+  formTitle = 'Editar Usuário';
+
+  editUserForm = new FormGroup({
+    nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    idade: new FormControl(null, [Validators.required])
+  });
+
+  userId! : number;
 
   constructor (
     private route : ActivatedRoute,
     private userService : UsuarioService,
     private router : Router,
     private toastService : ToastrService
-  ){
-    this.editUserForm = new FormGroup({
-      nome : new FormControl('', [Validators.required, Validators.minLength(3)]),
-      idade : new FormControl('', [Validators.required])
-    });
-  }
+  ){}
 
   ngOnInit() {
-    const userId = this.route.snapshot.params['id']; // Pega o ID da URL
-    this.userService.getUserById(userId).subscribe(user => {
-      this.editUserForm.patchValue(user);
+    this.userId = Number(this.route.snapshot.paramMap.get('id'));
+    this.userService.getUserById(this.userId).subscribe(user => {
+      this.editUserForm.setValue({
+        nome: user.nome,
+        idade: user.idade
+      });
     });
   }
 
-  atualizarUsuario() {
+  updateUser() {
     if (this.editUserForm.valid) {
       const userId = this.route.snapshot.params['id'];
       this.userService.updateUser(userId, this.editUserForm.value).subscribe({
@@ -55,10 +57,6 @@ export class EditarUsuarioComponent {
     } else {
       this.toastService.error("Preencha os campos corretamente!");
     }
-  }
-
-  navigate(){
-    this.router.navigate(["/app-user-list"]);
   }
 
 }

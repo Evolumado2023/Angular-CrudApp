@@ -1,24 +1,6 @@
-<app-home 
-    title="Editar usuário"
-    textBtn="Voltar"
-    (navigate) = "navigate()"
+<app-default-form-user
+    [formTitle]="formTitle"
+    [formAction]="editUserForm"
+    [formFunc]="updateUser.bind(this)"
 >
-    <form [formGroup]="editUserForm">
-        <app-input 
-            formControlName = "nome"
-            inputName = "Nome"
-            type = "text"
-            label = "DIGITE SEU NOME"
-            placeholder = "nome..."
-        ></app-input>
-        <app-input 
-            formControlName = "idade"
-            inputName = "Idade"
-            type = "number"
-            label = "DIGITE SUA IDADE"
-            placeholder = "idade..."
-        ></app-input>
-        <button (click)="atualizarUsuario()" class="btn btn-primary w-100">Salvar</button>
-    </form>
-
-</app-home>
+</app-default-form-user>

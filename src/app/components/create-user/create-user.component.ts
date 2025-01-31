@@ -5,18 +5,12 @@ import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { InputComponent } from '../input/input.component';
-
-interface CreateUser {
-  nome: FormControl<string>;
-  idade: FormControl<number>;
-}
+import { DefaultFormUserComponent } from '../default-form-user/default-form-user.component';
 
 @Component({
   selector: 'app-create-user',
   imports: [
-    HomeComponent,
-    ReactiveFormsModule,
-    InputComponent
+    DefaultFormUserComponent
   ],
   providers: [
     UsuarioService
@@ -26,36 +20,26 @@ interface CreateUser {
 })
 export class CreateUserComponent {
 
-  createUserForm : FormGroup<CreateUser>;
+  formTitle = 'Criar Usuário';
+
+  createUserForm = new FormGroup({
+    nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    idade: new FormControl(null, [Validators.required])
+  });
 
   constructor(
     private route : Router,
     private userService : UsuarioService,
     private toastService : ToastrService
-  ){
-    this.createUserForm = new FormGroup<CreateUser>({
-      nome: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
-      idade: new FormControl(null!, { nonNullable: true, validators: [Validators.required] })
+  ){}
+
+  submitUser() {
+    this.userService.saveUser(this.createUserForm.value).subscribe({
+      next: () => {
+        this.toastService.success('Usuário registrado com sucesso!');
+        this.route.navigate(['/app-user-list']);
+      },
+      error: () => this.toastService.error('Erro ao salvar usuário!')
     });
-  }
-
-  submit() {
-    if (this.createUserForm.valid) {
-      this.userService.saveUser(this.createUserForm.value) // Correção aqui
-        .subscribe({
-          next: () => {
-            this.toastService.success("Usuário registrado com sucesso!");
-            this.createUserForm.reset();
-            this.route.navigate(["/app-user-list"]);
-          },
-          error: () => this.toastService.error("Erro inesperado")
-        });
-    } else {
-      this.toastService.error("Preencha os campos corretamente!");
-    }
-  }
-
-  navigate(){
-    this.route.navigate(["/app-user-list"]);
   }
 }
